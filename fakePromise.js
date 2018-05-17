@@ -28,5 +28,11 @@ FakePromise.prototype.then = function(onFulfilled, onRejected) {
     onRejected(self.reason)
   }
   if (self.status === 'pendding') {
+    self.onResolvedCallbacks.push(function() {
+      onFulfilled(self.value)
+    })
+    self.onRejectedCallbacks.push(function() {
+      onRejected(self.reason)
+    })
   }
 }
