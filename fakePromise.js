@@ -31,19 +31,27 @@ function FakePromise(executor) {
 }
 FakePromise.prototype.then = function(onFulfilled, onRejected) {
   let self = this
+  let promise2
   if (self.status === 'resolved') {
-    onFulfilled(self.value)
-  }
-  if (self.status === 'rejected') {
-    onRejected(self.reason)
-  }
-  if (self.status === 'pendding') {
-    self.onResolvedCallbacks.push(function() {
+    promise2 = new FakePromise(function(resolve, reject) {
       onFulfilled(self.value)
     })
-    self.onRejectedCallbacks.push(function() {
+  }
+  if (self.status === 'rejected') {
+    promise2 = new FakePromise(function(resolve, reject) {
       onRejected(self.reason)
     })
   }
+  if (self.status === 'pendding') {
+    promise2 = new FakePromise(function(resolve, reject) {
+      self.onResolvedCallbacks.push(function() {
+        onFulfilled(self.value)
+      })
+      self.onRejectedCallbacks.push(function() {
+        onRejected(self.reason)
+      })
+    })
+  }
+  return promise2
 }
 module.exports = FakePromise
