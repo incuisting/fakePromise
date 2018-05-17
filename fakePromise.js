@@ -5,7 +5,7 @@ function FakePromise(executor) {
   self.reason = undefined
   function resolve(value) {
     if (self.status === 'pendding') {
-      self.status = 'resolve'
+      self.status = 'resolved'
       self.value = value
     }
   }
@@ -17,4 +17,12 @@ function FakePromise(executor) {
   }
   executor(resolve, reject)
 }
-FakePromise.prototype.then = function(onFulfilled, onRejected) {}
+FakePromise.prototype.then = function(onFulfilled, onRejected) {
+  let self = this
+  if (self.status === 'resolved') {
+    onFulfilled(self.value)
+  }
+  if (self.status === 'rejected') {
+    onRejected(self.reason)
+  }
+}
