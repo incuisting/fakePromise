@@ -3,6 +3,8 @@ function FakePromise(executor) {
   self.status = 'pendding'
   self.value = undefined
   self.reason = undefined
+  self.onResolvedCallbacks = []
+  self.onRejectedCallbacks = []
   function resolve(value) {
     if (self.status === 'pendding') {
       self.status = 'resolved'
@@ -24,5 +26,7 @@ FakePromise.prototype.then = function(onFulfilled, onRejected) {
   }
   if (self.status === 'rejected') {
     onRejected(self.reason)
+  }
+  if (self.status === 'pendding') {
   }
 }
