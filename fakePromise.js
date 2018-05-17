@@ -33,6 +33,11 @@ function resolvePromise(promise2, x, resolve, reject) {
   if (promise2 === x) {
     reject(new TypeError('自己引用自己'))
   }
+  if (x !== null || (typeof x === 'object' || typeof x === 'function')) {
+  } else {
+    //普通值
+    resolve(x)
+  }
 }
 FakePromise.prototype.then = function(onFulfilled, onRejected) {
   let self = this
