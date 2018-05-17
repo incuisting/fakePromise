@@ -9,12 +9,18 @@ function FakePromise(executor) {
     if (self.status === 'pendding') {
       self.status = 'resolved'
       self.value = value
+      self.onResolvedCallbacks.forEach(function(fn) {
+        fn()
+      })
     }
   }
   function reject(reason) {
     if (self.status === 'pendding') {
       self.status = 'reject'
       self.reason = reason
+      self.onRejectedCallbacks.forEach(function(fn) {
+        fn()
+      })
     }
   }
   executor(resolve, reject)
@@ -36,3 +42,4 @@ FakePromise.prototype.then = function(onFulfilled, onRejected) {
     })
   }
 }
+module.exports = FakePromise
