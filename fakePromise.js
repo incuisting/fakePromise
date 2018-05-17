@@ -34,6 +34,28 @@ function resolvePromise(promise2, x, resolve, reject) {
     reject(new TypeError('自己引用自己'))
   }
   if (x !== null || (typeof x === 'object' || typeof x === 'function')) {
+    try {
+      let then = x.then
+      if (typeof then === 'function') {
+        then.call(
+          x,
+          function(y) {
+            //递归去解析返回值 知道返回值是普通值
+            resolvePromise(promise2, y, resolve, reject)
+          },
+          function(err) {
+            //失败了
+            reject(err)
+          }
+        )
+      } else {
+        //处理then 里面为普通值{then:111}
+        resolve(x)
+      }
+    } catch (e) {
+      //处理then抛错
+      reject(e)
+    }
   } else {
     //普通值
     resolve(x)
