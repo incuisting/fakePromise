@@ -16,14 +16,18 @@ function FakePromise(executor) {
   }
   function reject(reason) {
     if (self.status === 'pendding') {
-      self.status = 'reject'
+      self.status = 'rejected'
       self.reason = reason
       self.onRejectedCallbacks.forEach(function(fn) {
         fn()
       })
     }
   }
-  executor(resolve, reject)
+  try {
+    executor(resolve, reject)
+  } catch (error) {
+    reject(error)
+  }
 }
 FakePromise.prototype.then = function(onFulfilled, onRejected) {
   let self = this

@@ -1,8 +1,6 @@
 let FakePromise = require('./fakePromise')
 let p = new FakePromise(function(resolve, reject) {
-  setTimeout(function() {
-    resolve(100)
-  }, 1000)
+  throw new Error('错误')
 })
 
 p.then(
