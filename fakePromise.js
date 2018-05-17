@@ -34,21 +34,37 @@ FakePromise.prototype.then = function(onFulfilled, onRejected) {
   let promise2
   if (self.status === 'resolved') {
     promise2 = new FakePromise(function(resolve, reject) {
-      onFulfilled(self.value)
+      try {
+        onFulfilled(self.value)
+      } catch (error) {
+        reject(error)
+      }
     })
   }
   if (self.status === 'rejected') {
     promise2 = new FakePromise(function(resolve, reject) {
-      onRejected(self.reason)
+      try {
+        onRejected(self.reason)
+      } catch (error) {
+        reject(error)
+      }
     })
   }
   if (self.status === 'pendding') {
     promise2 = new FakePromise(function(resolve, reject) {
       self.onResolvedCallbacks.push(function() {
-        onFulfilled(self.value)
+        try {
+          onFulfilled(self.value)
+        } catch (error) {
+          reject(error)
+        }
       })
       self.onRejectedCallbacks.push(function() {
-        onRejected(self.reason)
+        try {
+          onRejected(self.reason)
+        } catch (error) {
+          reject(error)
+        }
       })
     })
   }

@@ -1,6 +1,6 @@
 let FakePromise = require('./fakePromise')
 let p = new FakePromise(function(resolve, reject) {
-  reject('失败')
+  reject('xx')
 })
 
 p
@@ -10,8 +10,7 @@ p
       return 'success'
     },
     function(err) {
-      console.log('err', err)
-      return 'err'
+      throw new Error('失败')
     }
   )
   .then(
@@ -19,6 +18,6 @@ p
       console.log(data)
     },
     function(err) {
-      console.log(err)
+      console.log('err', err)
     }
   )
