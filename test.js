@@ -1,16 +1,15 @@
 let FakePromise = require('./fakePromise')
 let p = new FakePromise(function(resolve, reject) {
-  reject('xx')
+  resolve()
 })
 
 p
   .then(
     function(data) {
-      console.log('data', data)
-      return 'success'
+      return '1000'
     },
     function(err) {
-      throw new Error('失败')
+      console.log(err)
     }
   )
   .then(
