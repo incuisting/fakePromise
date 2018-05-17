@@ -33,6 +33,7 @@ function resolvePromise(promise2, x, resolve, reject) {
   if (promise2 === x) {
     reject(new TypeError('自己引用自己'))
   }
+  let called //是否调用过成功或者失败
   if (x !== null || (typeof x === 'object' || typeof x === 'function')) {
     try {
       let then = x.then
@@ -40,10 +41,14 @@ function resolvePromise(promise2, x, resolve, reject) {
         then.call(
           x,
           function(y) {
+            if (called) return
+            called = true
             //递归去解析返回值 知道返回值是普通值
             resolvePromise(promise2, y, resolve, reject)
           },
           function(err) {
+            if (called) return
+            called = true
             //失败了
             reject(err)
           }
@@ -53,6 +58,8 @@ function resolvePromise(promise2, x, resolve, reject) {
         resolve(x)
       }
     } catch (e) {
+      if (called) return
+      called = true
       //处理then抛错
       reject(e)
     }
