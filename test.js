@@ -6,7 +6,11 @@ let p = new FakePromise(function(resolve, reject) {
 p
   .then(
     function(data) {
-      return '1000'
+      return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+          resolve(1000)
+        }, 1000)
+      })
     },
     function(err) {
       console.log(err)
