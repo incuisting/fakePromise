@@ -133,5 +133,12 @@ FakePromise.prototype.then = function(onFulfilled, onRejected) {
   }
   return promise2
 }
-
+FakePromise.defer = FakePromise.deferred = function() {
+  let dfd = {}
+  dfd.promise = new FakePromise(function(resolve, reject) {
+    dfd.resolve = resolve
+    dfd.reject = reject
+  })
+  return dfd
+}
 module.exports = FakePromise
