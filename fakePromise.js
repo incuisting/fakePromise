@@ -34,7 +34,7 @@ function resolvePromise(promise2, x, resolve, reject) {
     reject(new TypeError('自己引用自己'))
   }
   let called //是否调用过成功或者失败
-  if (x !== null || (typeof x === 'object' || typeof x === 'function')) {
+  if (x !== null && (typeof x === 'object' || typeof x === 'function')) {
     try {
       let then = x.then
       if (typeof then === 'function') {
