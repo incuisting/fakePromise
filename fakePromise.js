@@ -69,6 +69,18 @@ function resolvePromise(promise2, x, resolve, reject) {
   }
 }
 FakePromise.prototype.then = function(onFulfilled, onRejected) {
+  onFulfilled =
+    typeof onFulfilled === 'function'
+      ? onFulfilled
+      : function(value) {
+          return value
+        }
+  onRejected =
+    typeof onRejected === 'function'
+      ? onRejected
+      : function(err) {
+          throw err
+        }
   let self = this
   let promise2
   if (self.status === 'resolved') {
