@@ -85,28 +85,53 @@ FakePromise.prototype.then = function(onFulfilled, onRejected) {
   let promise2
   if (self.status === 'resolved') {
     promise2 = new FakePromise(function(resolve, reject) {
-      let x = onFulfilled(self.value)
-      resolvePromise(promise2, x, resolve, reject)
+      setTimeout(function() {
+        try {
+          let x = onFulfilled(self.value)
+          resolvePromise(promise2, x, resolve, reject)
+        } catch (error) {
+          reject(error)
+        }
+      })
     })
   }
   if (self.status === 'rejected') {
     promise2 = new FakePromise(function(resolve, reject) {
-      let x = onRejected(self.reason)
-      resolvePromise(promise2, x, resolve, reject)
+      setTimeout(function() {
+        try {
+          let x = onRejected(self.reason)
+          resolvePromise(promise2, x, resolve, reject)
+        } catch (error) {
+          reject(error)
+        }
+      })
     })
   }
   if (self.status === 'pendding') {
     promise2 = new FakePromise(function(resolve, reject) {
       self.onResolvedCallbacks.push(function() {
-        let x = onFulfilled(self.value)
-        resolvePromise(promise2, x, resolve, reject)
+        setTimeout(function() {
+          try {
+            let x = onFulfilled(self.value)
+            resolvePromise(promise2, x, resolve, reject)
+          } catch (error) {
+            reject(error)
+          }
+        })
       })
       self.onRejectedCallbacks.push(function() {
-        let x = onRejected(self.reason)
-        resolvePromise(promise2, x, resolve, reject)
+        setTimeout(function() {
+          try {
+            let x = onRejected(self.reason)
+            resolvePromise(promise2, x, resolve, reject)
+          } catch (error) {
+            reject(error)
+          }
+        })
       })
     })
   }
   return promise2
 }
+
 module.exports = FakePromise
