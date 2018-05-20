@@ -137,6 +137,24 @@ FakePromise.prototype.then = function(onFulfilled, onRejected) {
 FakePromise.prototype.catch = function(callback) {
   return this.then(null, callback)
 }
+FakePromise.all = function(promises) {
+  //promises为一个promise数组
+  return new FakePromise(function(resolve, reject) {
+    let arr = [] //保存返回的值
+    let i = 0 //计数调用成功的次数
+    function processData(index, y) {
+      arr[index] = y
+      if (++i === promises.length) {
+        resolve(arr)
+      }
+    }
+    for (let index = 0; index < promises.length; index++) {
+      promises[index].then(function(y) {
+        processData(index, y)
+      }, reject)
+    }
+  })
+}
 FakePromise.defer = FakePromise.deferred = function() {
   let dfd = {}
   dfd.promise = new FakePromise(function(resolve, reject) {
