@@ -133,6 +133,10 @@ FakePromise.prototype.then = function(onFulfilled, onRejected) {
   }
   return promise2
 }
+//捕获错误的方法
+FakePromise.prototype.catch = function(callback) {
+  return this.then(null, callback)
+}
 FakePromise.defer = FakePromise.deferred = function() {
   let dfd = {}
   dfd.promise = new FakePromise(function(resolve, reject) {
