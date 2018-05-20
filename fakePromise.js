@@ -155,6 +155,13 @@ FakePromise.all = function(promises) {
     }
   })
 }
+FakePromise.race = function(promises) {
+  return new FakePromise(function(resolve, reject) {
+    for (let index = 0; index < promises.length; index++) {
+      promises[i].then(resolve, reject)
+    }
+  })
+}
 FakePromise.defer = FakePromise.deferred = function() {
   let dfd = {}
   dfd.promise = new FakePromise(function(resolve, reject) {
