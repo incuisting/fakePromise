@@ -162,6 +162,16 @@ FakePromise.race = function(promises) {
     }
   })
 }
+FakePromise.resolve = function(value) {
+  return new FakePromise(function(resolve, reject) {
+    resolve(value)
+  })
+}
+FakePromise.reject = function(reason) {
+  return new FakePromise(function(resolve, reject) {
+    reject(reason)
+  })
+}
 FakePromise.defer = FakePromise.deferred = function() {
   let dfd = {}
   dfd.promise = new FakePromise(function(resolve, reject) {
